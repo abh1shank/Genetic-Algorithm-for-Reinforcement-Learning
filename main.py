@@ -10,7 +10,4 @@ test.initialize_random_hypothesis()
 
 model=test.model
 
-with open("weights.txt", "w") as file:
-    file.write(f"{test.final_weights}\n")
-
 print("DONE")
