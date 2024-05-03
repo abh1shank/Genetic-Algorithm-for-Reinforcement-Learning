@@ -3,7 +3,6 @@ import time
 import numpy as np
 import matplotlib.pyplot as plt
 t = time.process_time()
-#only storing top 250 hypothesis to avoid memory leak
 
 class Genetic:
     def __init__(self, env, number_actions, obs_space_size, generations, mutation_prop=0.05, top_hypotheses=100):
@@ -75,12 +74,10 @@ class Genetic:
                 score = self.evaluate_hypothesis(w_tup)
                 self.scores.append(score)
 
-        # Sort scores and select top hypotheses
         sorted_scores = sorted(self.scores, reverse=True)
         top_scores = sorted_scores[:self.top_hypotheses]
         top_weights = [self.weight_map[score] for score in top_scores]
 
-        # Update scores and weight_map
         self.scores = top_scores
         self.weight_map = {score: weight for score, weight in zip(top_scores, top_weights)}
 
@@ -100,7 +97,6 @@ class Genetic:
             self.mutate_parents(chosen_parents)
 
     def select_parents(self):
-        # Shift scores to make them all positive
         mini = min(self.scores)
         d_scores = [i+abs(mini)+1 for i in self.scores]
         num_mutated_hypos = int(self.mutation_prop * len(self.scores))
